@@ -1,0 +1,10 @@
+{
+  "name": "sequelize-ts-cli",
+  "version": "1.0.0",
+  "description": "Sequelize Typescript Cli",
+  "main": "/dist/main.js",
+  "repository": "https://github.com/yonycalsin/sequelize-ts-cli.git",
+  "author": "Yony Calsin",
+  "license": "MIT",
+  "private": false
+}
