@@ -4,7 +4,10 @@ import fs from 'fs';
 import path from 'path';
 import { exec } from 'child_process';
 
-const template = `var path = require('path');
+const template = `
+/* Create by https://github.com/yonycalsin/sequelize-ts-cli */
+
+var path = require('path');
 
 const root = (...more) => path.resolve('scripts', 'database', ...more);
 
