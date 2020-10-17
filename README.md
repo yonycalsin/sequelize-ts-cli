@@ -1,0 +1,1 @@
+## Sequelize Ts Cli
