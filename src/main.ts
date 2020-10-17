@@ -4,7 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import { exec } from 'child_process';
 
-const template = `
+const rcTemplate = `
 /* Create by https://github.com/yonycalsin/sequelize-ts-cli */
 
 var path = require('path');
@@ -41,7 +41,7 @@ const initFile = () => {
    const already = fs.existsSync(optionsPath);
 
    if (!already) {
-      fs.writeFileSync(optionsPath, template, {
+      fs.writeFileSync(optionsPath, rcTemplate, {
          encoding: 'utf-8',
       });
    }
