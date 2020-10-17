@@ -1,7 +1,16 @@
-/node_modules
-/.vscode
-/src
+# Folder
+.github
+.vscode
+node_modules
+src
 
+
+# Files
 .gitignore
+.nvmrc
 .prettierignore
 .prettierrc
+dev.md
+sequelizerc.ts
+tsconfig.json
+yarn.lock
