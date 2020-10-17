@@ -28,5 +28,10 @@
       "ts-node": "^9.0.0",
       "ts-node-dev": "^1.0.0",
       "typescript": "^4.0.3"
+   },
+   "bin": {
+      "sts": "./dist/main",
+      "sequelize-ts-cli": "./dist/main",
+      "stc": "./dist/main"
    }
 }
