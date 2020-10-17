@@ -1,7 +1,25 @@
 #!/usr/bin/env node
-import { getYArgs } from 'sequelize-cli/lib/core/yargs';
+
+import getYArgs from 'sequelize-cli/lib/core/yargs';
+
+import Promise from 'bluebird';
+import { isEmpty } from 'lodash';
+
+const cliPackage = require('sequelize-cli/package.json');
 
 const yargs = getYArgs();
+
+Promise.coroutine.addYieldHandler((yieldedValue) => {
+   if (Array.isArray(yieldedValue)) {
+      return Promise.all(yieldedValue);
+   }
+});
+
+Promise.coroutine.addYieldHandler((yieldedValue) => {
+   if (isEmpty(yieldedValue)) {
+      return Promise.resolve(yieldedValue);
+   }
+});
 
 import init from 'sequelize-cli/lib/commands/init';
 import migrate from 'sequelize-cli/lib/commands/migrate';
@@ -10,6 +28,7 @@ import migrateUndoAll from 'sequelize-cli/lib/commands/migrate_undo_all';
 import seed from 'sequelize-cli/lib/commands/seed';
 import seedOne from 'sequelize-cli/lib/commands/seed_one';
 import migrationGenerate from 'sequelize-cli/lib/commands/migration_generate';
+
 import modelGenerate from 'sequelize-cli/lib/commands/model_generate';
 import seedGenerate from 'sequelize-cli/lib/commands/seed_generate';
 import database from 'sequelize-cli/lib/commands/database';
@@ -17,22 +36,7 @@ import helpers from 'sequelize-cli/lib/helpers/index';
 
 helpers.view.teaser();
 
-const template = `
-var path = require('path');
-
-const root = (...more) => path.resolve('scripts', 'database', ...more);
-
-module.exports = {
-   env: 'development',
-   config: root('config', 'config.js'),
-   'models-path': root('models'),
-   'seeders-path': root('seeders'),
-   'migrations-path': root('migrations'),
-};`;
-
-yargs
-   .help()
-   .version()
+const cli = yargs
    .command('db:migrate', 'Run pending migrations', migrate)
    .command(
       'db:migrate:schema:timestamps:add',
@@ -68,8 +72,14 @@ yargs
       'Generates a new seed file',
       seedGenerate,
    )
+   .version(() => cliPackage.version)
    .wrap(yargs.terminalWidth())
-   .demandCommand(1, 'Please specify a command')
-   .help()
    .strict()
-   .recommendCommands().argv;
+   .help();
+
+const args = cli.argv;
+
+// if no command then show help
+if (!args._[0]) {
+   cli.showHelp();
+}
