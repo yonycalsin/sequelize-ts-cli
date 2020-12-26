@@ -3,21 +3,30 @@ name: CI Workflow
 on: push
 
 jobs:
-  eslint:
-    if: "! contains(toJSON(github.event.commits.*.message), '[skip ci]')"
+   eslint:
+      if: "! contains(toJSON(github.event.commits.*.message), '[skip ci]')"
 
-    runs-on: ubuntu-latest
+      runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v2.1.1
+      steps:
+         - uses: actions/checkout@v2
 
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v1.4.2
-        with:
-          node-version: 12.x
+         - name: Set up node environment
+           uses: actions/setup-node@v2-beta
+           with:
+              node-version: 12.x
 
-      - name: Install dependencies
-        run: npm i
+         - name: Cache node modules
+           id: node-modules
+           uses: actions/cache@v2
+           with:
+              path: node_modules
+              key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}
+              restore-keys: |
+                 ${{ runner.os }}-node-
+ 
+         - if: steps.node-modules.outputs.cache-hit != 'true'
+           run: yarn
 
-      - name: eslint / tslint
-        run: npm run lint
+         - name: eslint
+           run: yarn lint
