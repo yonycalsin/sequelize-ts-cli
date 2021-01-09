@@ -60,7 +60,7 @@ const logger = (error, stdout, stderr) => {
    console.log(stdout);
 };
 const getArgsString = () => {
-   let data = process.argv;
+   const data = process.argv;
 
    delete data[0];
    delete data[1];
