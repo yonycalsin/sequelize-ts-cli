@@ -15,7 +15,8 @@
       "build:ts": "tsc",
       "clean": "rimraf -r dist config models seeders migrations scripts",
       "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-      "type-check": "tsc --noEmit"
+      "type-check": "tsc --noEmit",
+      "fetch": "sh ./scripts/git-fetch.sh"
    },
    "dependencies": {
       "tsconfig-paths": "^3.9.0"
