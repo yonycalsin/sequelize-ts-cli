@@ -1,8 +1,11 @@
 #!/usr/bin/env node
 import './init';
 import { getArgs } from 'src/helpers';
+import container from './container';
 
 const yargs = getArgs();
+
+container.cradle.sequelize;
 
 yargs
    .help()
