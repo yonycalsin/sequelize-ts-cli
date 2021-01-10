@@ -1,14 +1,18 @@
 import fs from 'fs';
 import path from 'path';
+import { defaultSequelizeRcFilePath } from 'src/constants';
+import waitPromise from 'src/utils/wait-promise';
 import yargs from 'yargs';
 
-const loadConfigFile = async (filePath: string) => {
-   const rcFile = filePath || path.resolve(process.cwd(), '.sequelizerc.ts');
+export const loadConfigFile = (filePath: string) => {
+   const rcFile = filePath ?? defaultSequelizeRcFilePath;
 
    const rcFileResolved = path.resolve(rcFile);
 
+   const promiseData = waitPromise<More>(import(rcFileResolved));
+
    const configData = fs.existsSync(rcFileResolved)
-      ? (await import(rcFileResolved)).default
+      ? promiseData?.default ?? promiseData
       : {};
 
    return configData;
