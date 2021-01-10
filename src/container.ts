@@ -23,7 +23,7 @@ const readFileFactory = (filePath: string) => () => {
 
 export const getSequelizeInstance = () => {
    const sequelize = new Sequelize({
-      database: 'fpyron-bin',
+      database: 'test',
       dialect: 'mysql',
       username: 'root',
       password: '123456',
