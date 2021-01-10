@@ -23,6 +23,13 @@ module.exports = {
       '@typescript-eslint/no-explicit-any': 'off',
 
       // Overries
-      '@typescript-eslint/no-unused-vars': 'error',
+      '@typescript-eslint/no-unused-vars': [
+         'error',
+         {
+            varsIgnorePattern: 'logger',
+            args: 'none',
+            ignoreRestSiblings: true,
+         },
+      ],
    },
 };

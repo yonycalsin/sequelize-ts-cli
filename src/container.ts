@@ -1,5 +1,6 @@
 import debug from 'debug';
 import util from 'util';
+import { packageJsonFilePath, projectPackageJsonFilePath } from './constants';
 
 const logger = debug('sequelize-ts-cli:container');
 
@@ -26,14 +27,14 @@ const createContainer = () => {
    };
 
    const proxyHandler: ProxyHandler<IProxyTarget> = {
-      get: (target, name) => resolve(name as string),
+      get: (target, name: string) => resolve(name),
    };
 
    const cradle = new Proxy<IProxyTarget>(proxyTarget, proxyHandler);
 
    const register = (more: More) => Object.assign(registrations, more);
 
-   const resolve = (name: string) => {
+   const resolve = async (name: string) => {
       const resolver = registrations[name];
 
       let resolved: any;
@@ -65,11 +66,17 @@ const createContainer = () => {
 
 const container = createContainer();
 
+const readFileFactory = (filePath: string) => () => {
+   try {
+      return require(filePath);
+   } catch (error) {
+      throw error;
+   }
+};
+
 container.register({
-   count: () => {
-      logger('Hola desde count function');
-      return 456;
-   },
+   projectPackage: readFileFactory(projectPackageJsonFilePath),
+   package: readFileFactory(packageJsonFilePath),
 });
 
 export default container;
